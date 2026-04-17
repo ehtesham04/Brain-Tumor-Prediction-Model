@@ -14,23 +14,50 @@ The model classifies MRI scans into four categories:
 - Glioma
 - Meningioma
 - Pituitary tumor
-- No tumor (Benign)
+- No tumor
 
 ---
 
 ## Results
 
-| Metric | Value |
-|--------|-------|
-| Classification accuracy | 85% |
-| Reduction in misclassification (vs. baseline) | 18% |
-| Number of classes | 4 |
+| Class | Accuracy |
+|-------|----------|
+| Overall | 82.84% |
+| Glioma | 86.05% |
+| Meningioma | 85.71% |
+| No Tumor | 92.31% |
+| Pituitary | 97.06% |
 
 ---
 
-## Dataset
+## Dataset Structure
 
-Real-world brain MRI scan dataset sourced from Kaggle, originally collected from The Cancer Imaging Archive (TCIA). The dataset contains labeled MRI images across the four tumor categories listed above.
+Three separate datasets were used across the pipeline:
+
+```
+Dataset/
+├── Training/               # Primary 4-class MRI dataset (Kaggle)
+│   ├── glioma/
+│   ├── meningioma/
+│   ├── pituitary/
+│   └── no_tumor/
+├── Validation/             # 4-class test split (used as validation during training)
+│   ├── glioma/
+│   ├── meningioma/
+│   ├── pituitary/
+│   └── no_tumor/
+└── Testing/                # Independent binary dataset (Kaggle) — final evaluation
+    ├── yes/                # Tumor present
+    └── no/                 # No tumor
+```
+
+The training and validation sets are drawn from a real-world MRI dataset originally collected by The Cancer Imaging Archive (TCIA) and sourced via Kaggle. The testing set is an independent binary classification dataset (tumor / no tumor), used as a final out-of-distribution stress test to evaluate the model's generalization beyond its training distribution.
+
+---
+
+## Why a Binary Test Set for a Multiclass Model?
+
+Rather than only testing on held-out samples from the same source, using a structurally different dataset (yes/no labels vs. four-class labels) provides a stronger signal of real-world robustness — the model must correctly map its four-class predictions to the presence or absence of a tumor without having seen this labeling scheme during training.
 
 ---
 
@@ -80,4 +107,4 @@ pip install -r requirements.txt
 
 ## Acknowledgements
 
-Dataset sourced from Kaggle. Project developed as part of the B.Tech final year curriculum.
+Training/validation dataset sourced from Kaggle, originally collected from a Chinese hospital. Binary testing dataset also sourced from Kaggle. Project developed as part of the B.Tech final year curriculum.
