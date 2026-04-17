@@ -107,4 +107,4 @@ pip install -r requirements.txt
 
 ## Acknowledgements
 
-Training/validation dataset sourced from Kaggle, originally collected from a Chinese hospital. Binary testing dataset also sourced from Kaggle. Project developed as part of the B.Tech final year curriculum.
+Training/validation dataset sourced from Kaggle, originally collected from The Cancer Imaging Archive (TCIA). The binary testing dataset was also sourced from Kaggle. Project developed as part of the B.Tech final year curriculum.
