@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
-
 
 import torch.nn as nn
 import torch
@@ -38,9 +36,6 @@ test_loader = DataLoader(test_dataset, batch_size=32, shuffle=True)
 
 dataiter = iter(train_loader)
 images, labels = next(dataiter)
-
-# imshow(torchvision.utils.make_grid(images))
-
 
 class TumorModel(nn.Module):
     def __init__(self, input_shape: int, hidden_units: int, output_shape: int):
@@ -90,22 +85,6 @@ class TumorModel(nn.Module):
             nn.MaxPool2d(kernel_size=2)
         )
 
-        # self.conv_layer3 = nn.Sequential(
-        #     nn.Conv2d(in_channels=hidden_units,
-        #               out_channels=hidden_units,
-        #               kernel_size=3,
-        #               stride=1,
-        #               padding=1),
-        #     nn.ReLU(),
-        #     nn.Conv2d(in_channels=hidden_units,
-        #               out_channels=hidden_units,
-        #               kernel_size=3,
-        #               stride=1,
-        #               padding=1),
-        #     nn.ReLU(),
-        #     nn.MaxPool2d(kernel_size=2)
-        # )
-
         self.conv_output_size = hidden_units * (224 // 4) * (224 // 4)
 
         self.classifier = nn.Sequential(
@@ -117,7 +96,6 @@ class TumorModel(nn.Module):
     def forward(self, x):
         x = self.conv_layer1(x)
         x = self.conv_layer2(x)
-        # x = self.conv_layer3(x)
 
         x = self.classifier(x)
 
@@ -147,10 +125,8 @@ for epoch in range(epochs):
         loss_val.backward()
         optimizer.step()
 
-        # if (i+1) % 2000 == 0:
         print(f'Epoch [{epoch+1}/{epochs}], Step [{i+1}/{n_total_steps}], Loss: {loss_val.item():.4f}')
 
-# print("Training Complete")
 torch.save(model.state_dict(), 'Tumor_Model.pth')
 
 with torch.no_grad():
@@ -180,10 +156,3 @@ with torch.no_grad():
     for i in range(4):
         acc = 100.0 * n_class_correct[i] / n_class_samples[i]
         print(f'Accuracy of {class_names[i]}: {acc} %')
-
-
-# In[ ]:
-
-
-
-
